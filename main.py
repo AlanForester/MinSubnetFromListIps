@@ -8,7 +8,7 @@ def main():
     Function get min subnet from generated ips array
     :return:
     """
-    print(get_min_subnet(gen_addrs(100)))
+    print(get_min_subnet(gen_addrs(2)))
 
 
 def get_min_subnet(source_ips):
@@ -21,15 +21,17 @@ def get_min_subnet(source_ips):
     bits = 0
     result = 0
     for ip in source_ips:
+        print(ip)
         ip_int = ip2int(ip)
         for bits in range(0, 31):
             max_addr = 4294967295 >> bits
-            if ip_int >= max_addr:
+            if max_addr <= ip_int > result:
                 result = ip_int
                 break
 
     res_ip = int2ip(result)
-    return f'{res_ip}/{bits + 1}'
+    res_bit = bits + 1
+    return f'{res_ip}/{res_bit}'
 
 
 def gen_addrs(count):
