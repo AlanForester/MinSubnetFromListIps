@@ -1,6 +1,3 @@
-import ipaddress
-import pprint
-
 import netaddr
 import randompy
 import socket
