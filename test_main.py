@@ -8,7 +8,7 @@ class TestMain(TestCase):
         self.assertEqual(int2ip(627161666), "37.97.186.66")
 
     def test_ip2int(self):
-        self.assertEqual(ip2int("37.97.186.66"), 627161666)
+        self.assertEqual(ip2int("255.255.255.255"), 4294967295)
 
     def test_gen_addrs(self):
         self.assertEqual(len(gen_addrs(5)), 5)
@@ -19,9 +19,10 @@ class TestMain(TestCase):
     def test_get_min_subnet(self):
         addrs = gen_addrs(1)
         result = get_min_subnet(addrs)
-        self.assertEqual(result.find(addrs[0]), 0)
+        self.assertIsNot(result, 'Error')
 
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()

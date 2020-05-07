@@ -1,3 +1,7 @@
+import ipaddress
+import pprint
+
+import netaddr
 import randompy
 import socket
 import struct
@@ -8,30 +12,35 @@ def main():
     Function get min subnet from generated ips array
     :return:
     """
-    print(get_min_subnet(gen_addrs(2)))
+    print("Result: ", get_min_subnet(gen_addrs(2)))
 
 
 def get_min_subnet(source_ips):
     """Return minimal ip address with subnet from ips array.
 
-    >>> get_min_subnet(["37.97.186.66"])
-    37.97.186.66/4
+    >>> get_min_subnet(["156.92.87.158","209.190.202.178"])
+    128.0.0.0/1
 
     """
-    bits = 0
-    result = 0
+    min_addr = 4294967296
+    max_addr = 0
     for ip in source_ips:
         print(ip)
         ip_int = ip2int(ip)
-        for bits in range(0, 31):
-            max_addr = 4294967295 >> bits
-            if max_addr <= ip_int > result:
-                result = ip_int
-                break
+        if min_addr > ip_int:
+            min_addr = ip_int
+        if max_addr < ip_int:
+            max_addr = ip_int
 
-    res_ip = int2ip(result)
-    res_bit = bits + 1
-    return f'Result: {res_ip}/{res_bit}'
+    result = 'Error'
+    for bit in reversed([i for i in range(0, 33)]):
+        subnet = f'{int2ip(max_addr)}/{bit}'
+        n = netaddr.IPNetwork(subnet)
+        if netaddr.IPAddress(int2ip(min_addr)) in netaddr.IPNetwork(n.cidr):
+            result = n.cidr
+            break
+
+    return str(result)
 
 
 def gen_addrs(count):
