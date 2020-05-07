@@ -31,7 +31,7 @@ def get_min_subnet(source_ips):
 
     res_ip = int2ip(result)
     res_bit = bits + 1
-    return f'{res_ip}/{res_bit}'
+    return f'Result: {res_ip}/{res_bit}'
 
 
 def gen_addrs(count):
